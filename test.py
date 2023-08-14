@@ -1,3 +1,4 @@
+from functools import partial
 import os
 import re
 import sys
@@ -18,7 +19,6 @@ import generate_dockerignore as lib
 
 CASES_DIR = Path(__file__).parent / 'test_cases'
 HIDDEN_PFX = '-'
-COPYALL_DOCKERFILE = b'FROM scratch\nCOPY . .\n'
 
 
 class RepoEnv(TypedDict):
@@ -82,10 +82,9 @@ class TestCase(unittest.TestCase):
     tar_bytes = check_output(['git', 'archive', 'HEAD'], **repo_env)
     yield from tar_files(tar_bytes)
 
-  def actual_docker_repo_files(self, repo_env: RepoEnv) -> Iterator[Tuple[Path, str]]:
+  def actual_docker_repo_files(self, dockerfile: Path, repo_env: RepoEnv) -> Iterator[Tuple[Path, str]]:
     yield from tar_files(check_output(
-      ['docker', 'build', '-q', '-f-', '-otype=tar,dest=-', '.'],
-      input=COPYALL_DOCKERFILE,
+      ['docker', 'build', '-q', '-f', dockerfile, '-otype=tar,dest=-', '.'],
       cwd=repo_env['cwd'],
     ))
 
@@ -111,15 +110,20 @@ class TestCase(unittest.TestCase):
 
       expected_files = dict(self.expected_files(case_copy))
 
-      for method in (self.actual_docker_repo_files, self.actual_git_repo_files):
-        with self.subTest(attr=method.__name__):
-          actual_files = dict(method(repo_env))
+      actual_file_methods = [
+        partial(self.actual_docker_repo_files, self.case_orig.parent / 'Dockerfile', repo_env),
+        partial(self.actual_git_repo_files, repo_env),
+      ]
+
+      for method in actual_file_methods:
+        with self.subTest(attr=method.func.__name__):
+          actual_files = dict(method())
 
           # replace dynamic paths with placeholders during testing
           for path in actual_files:
             actual_files[path] = actual_files[path].replace(repo_env['env']['HOME'], '$HOME')
 
-          self.write_actual_files(self.case_orig / method.__name__, actual_files.items())
+          self.write_actual_files(self.case_orig / method.func.__name__, actual_files.items())
 
           self.assertSetEqual(set(expected_files.keys()), set(actual_files.keys()))
           for path, expected_contents in expected_files.items():
