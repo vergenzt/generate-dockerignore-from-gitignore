@@ -10,6 +10,9 @@ generate-dockerignore = "generate_dockerignore:main"
 [tool.ruff]
 line-length = 130
 
+[tool.mypy]
+warn_unused_configs = true
+
 [tool.flit.module]
 name = "generate_dockerignore"
 
