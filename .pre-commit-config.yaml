@@ -32,4 +32,6 @@ repos:
     name: tests
     language: system
     entry: python -m unittest
-    files: \.py$
+    files: |
+      \.py$ |
+      ^test_cases/
