@@ -2,6 +2,7 @@
 name = "generate-dockerignore-from-gitignore"
 authors = [{name = "Tim Vergenz", email = "vergenzt@gmail.com"}]
 dynamic = ["version", "description"]
+readme = "README.txt"
 
 [project.scripts]
 generate-dockerignore = "generate_dockerignore:main"
