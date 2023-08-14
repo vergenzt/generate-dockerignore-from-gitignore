@@ -1,5 +1,4 @@
-usage: generate_dockerignore.py [-h] [-C DOCKER_ROOT] [-v] [-o OUTPUT]
-                                [PATH ...]
+usage: generate_dockerignore.py [-h] [-C DOCKER_ROOT] [-v] [-o OUTPUT] [PATH ...]
 
 .dockerignore file generator based on .gitignore file(s)
 
@@ -17,15 +16,14 @@ References:
 - https://docs.docker.com/engine/reference/builder/#dockerignore-file
 
 positional arguments:
-  PATH                  gitignore file(s), or directories under git source
-                        control (which will be searched for **/.gitignore).
+  PATH                  gitignore file(s), or directories under git source control (which will be
+                        searched for **/.gitignore).
 
 options:
   -h, --help            show this help message and exit
   -C DOCKER_ROOT, --docker-root DOCKER_ROOT
-                        Docker context directory to chdir into before
-                        continuing
+                        Docker context directory to chdir into before continuing
   -v, --verbose         Output per-file logging to stderr
   -o OUTPUT, --output OUTPUT
-                        File path for generated .dockerignore rule output, or
-                        - for stdout (default: .dockerignore)
+                        File path for generated .dockerignore rule output, or - for stdout
+                        (default: .dockerignore)

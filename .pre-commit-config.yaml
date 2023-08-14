@@ -18,7 +18,7 @@ repos:
   - id: regen-readme
     name: regenerate readme (from --help)
     language: system
-    entry: bash -c './generate_dockerignore.py --help > README.txt'
+    entry: bash -c 'COLUMNS=100 ./generate_dockerignore.py --help > README.txt'
     files: ^generate_dockerignore\.py$
 
   - id: pip-compile-multi
