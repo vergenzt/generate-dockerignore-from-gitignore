@@ -1,0 +1,14 @@
+[project]
+name = "generate-dockerignore-from-gitignore"
+authors = [{name = "Tim Vergenz", email = "vergenzt@gmail.com"}]
+dynamic = ["version", "description"]
+
+[project.scripts]
+generate-dockerignore = "generate_dockerignore:main"
+
+[tool.ruff]
+line-length = 130
+
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
