@@ -53,7 +53,7 @@ class TestCase(unittest.TestCase):
       check_call(['git', 'config', 'user.name', 'Test User'], cwd=repo_copy, stdout=DEVNULL)
       check_call(['git', 'config', 'user.email', 'testuser@example.com'], cwd=repo_copy, stdout=DEVNULL)
 
-      yield case_copy, dict(cwd=repo_copy, env={**os.environ, 'HOME': home_copy})
+      yield case_copy, dict(cwd=repo_copy, env={**os.environ, 'HOME': home_copy, 'XDG_CONFIG_HOME': home_copy / '.config'})
 
   def expected_files(self, case_copy: Path) -> Iterator[Tuple[Path, bytes]]:
     base_path = case_copy / 'expected_repo_files'
