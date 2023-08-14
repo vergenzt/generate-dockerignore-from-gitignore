@@ -15,6 +15,12 @@ repos:
 - repo: local
   hooks:
 
+  - id: regen_readme
+    name: regenerate readme (from --help)
+    language: system
+    entry: bash -c './generate_dockerignore.py --help > README.txt'
+    files: ^generate_dockerignore\.py$
+
   - id: tests
     name: tests
     language: system

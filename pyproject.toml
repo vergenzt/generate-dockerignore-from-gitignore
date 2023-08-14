@@ -9,6 +9,9 @@ generate-dockerignore = "generate_dockerignore:main"
 [tool.ruff]
 line-length = 130
 
+[tool.flit.module]
+name = "generate_dockerignore"
+
 [build-system]
 requires = ["flit_core >=3.2,<4"]
 build-backend = "flit_core.buildapi"
