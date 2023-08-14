@@ -11,6 +11,8 @@ from subprocess import DEVNULL, check_call, check_output
 from tempfile import TemporaryDirectory
 from typing import Iterator, Tuple
 
+from parameterized import parameterized_class
+
 import generate_dockerignore as lib
 
 
@@ -26,7 +28,13 @@ def tar_files(tar_bytes: bytes) -> Iterator[Tuple[Path, bytes]]:
         yield Path(member.path), tar_file.extractfile(member).read()
 
 
-class Test(unittest.TestCase):
+@parameterized_class(
+  ['case_orig'],
+  [[case] for case in filter(Path.is_dir, CASES_DIR.iterdir())],
+  class_name_func=lambda cls, num, params: f'{cls.__name__}_{params["case_orig"].name}'
+)
+class TestCase(unittest.TestCase):
+  case_orig: Path
 
   @contextmanager
   def case_copy(self, case_orig: Path) -> Iterator[Tuple[Path, dict]]:
@@ -79,24 +87,22 @@ class Test(unittest.TestCase):
       dst_path.write_bytes(bytes)
 
   def test(self):
-    for case_orig in (child for child in CASES_DIR.iterdir() if child.is_dir()):
-      with self.subTest(test_case=case_orig.name):
-        with self.case_copy(case_orig) as (case_copy, repo_env):
+    with self.case_copy(self.case_orig) as (case_copy, repo_env):
 
-          expected_output = (case_orig / 'expected_output').read_text()
-          actual_output = check_output([sys.executable, lib.__file__], text=True, **repo_env)
+      expected_output = (self.case_orig / 'expected_output').read_text()
+      actual_output = check_output([sys.executable, lib.__file__], text=True, **repo_env)
 
-          with self.subTest(attr='output'):
-            (case_orig / 'actual_output').write_text(actual_output)
-            self.assertMultiLineEqual(expected_output, actual_output)
+      with self.subTest(attr='output'):
+        (self.case_orig / 'actual_output').write_text(actual_output)
+        self.assertMultiLineEqual(expected_output, actual_output)
 
-          expected_files = dict(self.expected_files(case_copy))
+      expected_files = dict(self.expected_files(case_copy))
 
-          for method in (self.actual_docker_repo_files, self.actual_git_repo_files):
-            with self.subTest(attr=method.__name__):
-              actual_files = dict(method(repo_env))
-              self.write_actual_files(case_orig / method.__name__, actual_files.items())
-              self.assertDictEqual(expected_files, actual_files)
+      for method in (self.actual_docker_repo_files, self.actual_git_repo_files):
+        with self.subTest(attr=method.__name__):
+          actual_files = dict(method(repo_env))
+          self.write_actual_files(self.case_orig / method.__name__, actual_files.items())
+          self.assertDictEqual(expected_files, actual_files)
 
 
 if __name__ == '__main__':
