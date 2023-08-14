@@ -7,11 +7,6 @@ repos:
   - id: end-of-file-fixer
     exclude: ^test/cases/
 
-- repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.0.284
-  hooks:
-  - id: ruff
-
 - repo: local
   hooks:
 
@@ -45,11 +40,17 @@ repos:
     pass_filenames: false
     files: ^requirements/
 
+  - id: ruff
+    name: ruff (linting)
+    language: system
+    entry: ruff check --fix
+    types: [python]
+
   - id: mypy
     name: mypy (type checking)
     language: system
     entry: mypy
-    files: \.py$
+    types: [python]
 
   - id: tests
     name: tests

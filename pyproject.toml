@@ -8,7 +8,12 @@ readme = "README.md"
 generate-dockerignore = "generate_dockerignore:main"
 
 [tool.ruff]
+src = ["src", "test"]
+select = ["E", "F", "I"]
 line-length = 130
+
+[tool.ruff.isort]
+lines-after-imports = 2
 
 [tool.mypy]
 warn_unused_configs = true

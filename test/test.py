@@ -1,10 +1,10 @@
-from functools import partial
 import os
 import re
 import sys
 import tarfile
 import unittest
 from contextlib import contextmanager
+from functools import partial
 from io import BytesIO
 from pathlib import Path
 from shutil import copytree, rmtree

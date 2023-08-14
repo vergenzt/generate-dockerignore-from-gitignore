@@ -4,3 +4,4 @@ pip-compile-multi
 flit
 mypy
 cogapp
+ruff

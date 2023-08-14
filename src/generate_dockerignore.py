@@ -7,9 +7,9 @@ import argparse
 import logging
 import os
 import re
+import sys
 from pathlib import Path
 from subprocess import run
-import sys
 from typing import IO, Iterator, List, Optional, cast
 
 
