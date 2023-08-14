@@ -3,7 +3,7 @@
 # excluding .git by default
 .git
 
-### from: .git/info/exclude
+### from: $HOME/.config/git/ignore
 **/foo
 
 
