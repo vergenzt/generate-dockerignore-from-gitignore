@@ -17,7 +17,7 @@ from parameterized import parameterized_class  # type: ignore
 import generate_dockerignore as lib
 
 
-CASES_DIR = Path(__file__).parent / 'test_cases'
+CASES_DIR = Path(__file__).parent / 'cases'
 HIDDEN_PFX = '-'
 
 
