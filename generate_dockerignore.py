@@ -27,7 +27,7 @@ import sys
 from typing import IO, Iterator, Optional, cast
 
 
-__version__ = '0.1'
+__version__ = '0.1.1'
 
 
 def gitignore_pat_from_line(line: str) -> Optional[str]:
