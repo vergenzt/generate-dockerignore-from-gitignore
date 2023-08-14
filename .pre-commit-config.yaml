@@ -15,11 +15,18 @@ repos:
 - repo: local
   hooks:
 
-  - id: regen_readme
+  - id: regen-readme
     name: regenerate readme (from --help)
     language: system
     entry: bash -c './generate_dockerignore.py --help > README.txt'
     files: ^generate_dockerignore\.py$
+
+  - id: pip-compile-multi
+    name: pip-compile-multi
+    language: system
+    entry: pip-compile-multi --no-upgrade --allow-unsafe
+    pass_filenames: false
+    files: ^requirements/
 
   - id: tests
     name: tests
