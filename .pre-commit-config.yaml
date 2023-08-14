@@ -15,11 +15,28 @@ repos:
 - repo: local
   hooks:
 
-  - id: regen-readme
-    name: regenerate readme (from --help)
+  - id: cog
+    name: regenerate generated files (codegen)
     language: system
-    entry: bash -c 'COLUMNS=100 ./generate_dockerignore.py --help > README.txt'
-    files: ^generate_dockerignore\.py$
+    entry: cog
+    args: [
+      -r, # replace input with output
+      -c, # include checksum
+      -P, # use 'print' for code output
+      -p, 'import subprocess as sp, re, os' # prelude
+    ]
+    files: |
+      (?x)^
+      #[[[cog
+      #  files = sp.check_output(['git', 'grep', '-l', '-F', '-e', '[[[' + 'cog'], text=True).splitlines()
+      #  print('\n' + ' |\n'.join(map(re.escape, files)) + '\n')
+      #]]]
+
+      \.pre\-commit\-config\.yaml |
+      README\.md
+
+      #[[[end]]] (checksum: 74345a875646da6d800f7047edca64c2)
+      $
 
   - id: pip-compile-multi
     name: pip-compile-multi

@@ -1,20 +1,6 @@
 #!/usr/bin/env python3
 '''
 .dockerignore file generator based on .gitignore file(s)
-
-Handles the following differences:
-
-| behavior                                    | .gitignore            | .dockerignore             |
-| ------------------------------------------- | --------------------- | ------------------------- |
-| plain patterns without slashes or wildcards | ⏬️ match recursively  | ⬆️ match top-level only   |
-| separate per-directory ignore files         | ✅ allowed            | ❌ not allowed            |
-| local .git/info/exclude file                | ✅ included           | -                         |
-| global core.excludesFile file               | ✅ included           | -                         |
-
-
-References:
-- https://git-scm.com/docs/gitignore
-- https://docs.docker.com/engine/reference/builder/#dockerignore-file
 '''
 
 import argparse
